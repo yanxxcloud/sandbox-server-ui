@@ -1,0 +1,186 @@
+.terminal {
+  display: flex;
+  flex-direction: column;
+  background: #1c1c1c;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  height: 450px;
+  font-family: 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+}
+
+/* 标题栏 - macOS 风格 */
+.titleBar {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: linear-gradient(180deg, #3c3c3c 0%, #2a2a2a 100%);
+  border-bottom: 1px solid #1a1a1a;
+  user-select: none;
+}
+
+.buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.buttons span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.btnClose {
+  background: #ff5f56;
+  border: 1px solid #e0443e;
+}
+
+.btnMinimize {
+  background: #ffbd2e;
+  border: 1px solid #dea123;
+}
+
+.btnMaximize {
+  background: #27c93f;
+  border: 1px solid #1aab29;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  color: #999;
+  font-weight: 500;
+}
+
+.spacer {
+  width: 52px;
+}
+
+/* 终端内容区 */
+.content {
+  flex: 1;
+  padding: 12px 16px;
+  overflow-y: auto;
+  background: #1c1c1c;
+  cursor: text;
+}
+
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content::-webkit-scrollbar-track {
+  background: #1c1c1c;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* 输出行 */
+.line {
+  line-height: 1.5;
+  font-size: 13px;
+  min-height: 20px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.input {
+  color: #f0f0f0;
+}
+
+.stdout {
+  color: #f0f0f0;
+}
+
+.stderr {
+  color: #ff6b6b;
+}
+
+.info {
+  color: #666;
+  font-style: italic;
+}
+
+/* 提示符样式 */
+.prompt {
+  color: #50fa7b;
+  font-weight: 600;
+}
+
+.promptSymbol {
+  color: #ff79c6;
+  font-weight: bold;
+}
+
+.command {
+  color: #f8f8f2;
+}
+
+/* 当前输入行 */
+.inputLine {
+  display: flex;
+  align-items: center;
+  line-height: 1.5;
+  font-size: 13px;
+  min-height: 20px;
+}
+
+.inputLine input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #f8f8f2;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 0;
+  margin: 0;
+  caret-color: #f8f8f2;
+}
+
+.inputLine input:disabled {
+  color: #888;
+}
+
+.inputLine input::placeholder {
+  color: #555;
+}
+
+/* 光标闪烁 */
+.cursor {
+  color: #f8f8f2;
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* 选中文本样式 */
+.content ::selection {
+  background: rgba(248, 248, 242, 0.2);
+}
+
+/* 链接样式 */
+.content a {
+  color: #8be9fd;
+  text-decoration: underline;
+}
+
+.content a:hover {
+  color: #bff4ff;
+}

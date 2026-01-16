@@ -1,0 +1,208 @@
+.fileManager {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+}
+
+.breadcrumb button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.breadcrumb button:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.breadcrumb svg {
+  color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions button,
+.uploadBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.actions button:hover,
+.uploadBtn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.content {
+  display: flex;
+  height: 350px;
+}
+
+.fileList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.fileItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--text-secondary);
+}
+
+.fileItem:hover {
+  background: var(--bg-tertiary);
+}
+
+.fileItem.selected {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--accent-blue);
+}
+
+.fileItem svg {
+  flex-shrink: 0;
+}
+
+.fileName {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fileSize {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.loading,
+.empty {
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.preview {
+  width: 50%;
+  border-left: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.previewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.previewActions {
+  display: flex;
+  gap: 8px;
+}
+
+.previewActions button,
+.previewActions a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.previewActions button:hover,
+.previewActions a:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.previewActions .danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+}
+
+.previewActions .save {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  color: white;
+}
+
+.previewContent {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+}
+
+.previewContent pre {
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-secondary);
+}
+
+.editor {
+  width: 100%;
+  height: 100%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px;
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  resize: none;
+}
+
+.editor:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+}

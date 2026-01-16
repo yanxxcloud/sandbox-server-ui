@@ -1,0 +1,17 @@
+com/opensandbox/backend/dto/ExecResponse$ExecResponseBuilder.class
+com/opensandbox/backend/dto/ExecResponse.class
+com/opensandbox/backend/service/InteractiveTerminalService$SessionInfo.class
+com/opensandbox/backend/service/SandboxService.class
+com/opensandbox/backend/config/WebSocketConfig.class
+com/opensandbox/backend/service/InteractiveTerminalService.class
+com/opensandbox/backend/controller/TerminalWebSocketHandler.class
+com/opensandbox/backend/dto/ExecRequest.class
+com/opensandbox/backend/controller/SandboxController.class
+com/opensandbox/backend/dto/FileInfo$FileInfoBuilder.class
+com/opensandbox/backend/SandboxBackendApplication.class
+com/opensandbox/backend/dto/FileWriteRequest.class
+com/opensandbox/backend/dto/FileListRequest.class
+com/opensandbox/backend/config/WebConfig.class
+com/opensandbox/backend/dto/FileInfo.class
+com/opensandbox/backend/config/OpenSandboxConfig.class
+com/opensandbox/backend/controller/GlobalExceptionHandler.class

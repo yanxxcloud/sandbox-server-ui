@@ -1,0 +1,262 @@
+.container {
+  max-width: 1400px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.filterBtn,
+.refreshBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.filterBtn:hover,
+.refreshBtn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.filterBtn.active {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: white;
+}
+
+.createBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: var(--accent-blue);
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.createBtn:hover {
+  background: var(--accent-blue-hover);
+  color: white;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filterLabel {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.filterTags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filterTag {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  transition: all 0.2s;
+}
+
+.filterTag:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+.filterTag.selected {
+  background: var(--accent-blue);
+  border-color: var(--accent-blue);
+  color: white;
+}
+
+.clearFilters {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: none;
+  background: var(--accent-red);
+  color: white;
+  font-size: 13px;
+  margin-left: auto;
+}
+
+.tableWrapper {
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 16px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 14px;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.projectName {
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.id {
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 13px;
+  background: var(--bg-tertiary);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.image {
+  color: var(--accent-blue);
+  font-family: 'Monaco', 'Menlo', monospace;
+  font-size: 13px;
+}
+
+.rowActions {
+  display: flex;
+  gap: 8px;
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+
+.actionBtn:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.actionBtn.danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.pageBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.pageBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pageInfo {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.loading,
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  color: var(--text-muted);
+  gap: 16px;
+}
+
+.empty p {
+  font-size: 18px;
+}
