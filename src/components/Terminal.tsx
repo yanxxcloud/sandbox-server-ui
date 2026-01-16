@@ -13,9 +13,7 @@ interface OutputLine {
 
 export function Terminal({ sandboxId }: TerminalProps) {
   const [input, setInput] = useState('');
-  const [output, setOutput] = useState<OutputLine[]>([
-    { type: 'info', text: `Connecting to sandbox: ${sandboxId.slice(0, 8)}...` },
-  ]);
+  const [output, setOutput] = useState<OutputLine[]>([]);
   const [isExecuting, setIsExecuting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [history, setHistory] = useState<string[]>([]);
@@ -25,9 +23,21 @@ export function Terminal({ sandboxId }: TerminalProps) {
   const terminalRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const wsRef = useRef<TerminalWebSocket | null>(null);
+  const connectionMessageAddedRef = useRef(false); // 跟踪是否已添加连接消息
 
   // WebSocket 连接
   useEffect(() => {
+    // 如果已经有连接，先断开
+    if (wsRef.current) {
+      wsRef.current.disconnect();
+      wsRef.current = null;
+    }
+    
+    // 重置状态
+    connectionMessageAddedRef.current = false;
+    setIsConnected(false);
+    setIsExecuting(false);
+    
     const ws = new TerminalWebSocket(sandboxId, {
       onStdout: (data) => {
         setOutput(prev => [...prev, { type: 'stdout', text: data }]);
@@ -41,18 +51,43 @@ export function Terminal({ sandboxId }: TerminalProps) {
           setOutput(prev => [...prev, { type: 'info', text: `Exit code: ${code}` }]);
         }
         setIsExecuting(false);
+        // 命令执行完成后，重新聚焦输入框
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 100);
       },
       onError: (error) => {
         setOutput(prev => [...prev, { type: 'stderr', text: `Error: ${error}` }]);
         setIsExecuting(false);
+        // 错误后也重新聚焦输入框
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 100);
       },
       onConnected: () => {
         setIsConnected(true);
-        setOutput(prev => [...prev, 
-          { type: 'info', text: `Connected to sandbox: ${sandboxId.slice(0, 8)}...` },
-          { type: 'info', text: 'Type commands to execute. Use ↑↓ for history.' },
-          { type: 'info', text: '' },
-        ]);
+        // 只在第一次连接时添加消息，避免重复（React StrictMode 会导致重复渲染）
+        if (!connectionMessageAddedRef.current) {
+          connectionMessageAddedRef.current = true;
+          setOutput(prev => {
+            // 双重检查：确保输出中没有连接消息
+            const hasConnectionMessage = prev.some(
+              line => line.type === 'info' && 
+              (line.text.includes('Connected to sandbox') || line.text.includes('Connecting to sandbox'))
+            );
+            if (hasConnectionMessage) {
+              return prev;
+            }
+            return [
+              ...prev.filter(line => 
+                !(line.type === 'info' && line.text.includes('Connecting to sandbox'))
+              ),
+              { type: 'info', text: `Connected to sandbox: ${sandboxId.slice(0, 8)}...` },
+              { type: 'info', text: 'Type commands to execute. Use ↑↓ for history.' },
+              { type: 'info', text: '' },
+            ];
+          });
+        }
       },
     });
     
@@ -60,7 +95,11 @@ export function Terminal({ sandboxId }: TerminalProps) {
     wsRef.current = ws;
 
     return () => {
-      ws.disconnect();
+      connectionMessageAddedRef.current = false;
+      if (wsRef.current) {
+        wsRef.current.disconnect();
+        wsRef.current = null;
+      }
     };
   }, [sandboxId]);
 
@@ -71,10 +110,23 @@ export function Terminal({ sandboxId }: TerminalProps) {
     }
   }, [output]);
 
+  // 当命令执行完成时，自动聚焦输入框
+  useEffect(() => {
+    if (!isExecuting && isConnected && inputRef.current) {
+      // 使用 setTimeout 确保 DOM 更新完成后再聚焦
+      const timer = setTimeout(() => {
+        inputRef.current?.focus();
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isExecuting, isConnected]);
+
   // 点击终端区域时聚焦输入框
   const focusInput = useCallback(() => {
-    inputRef.current?.focus();
-  }, []);
+    if (inputRef.current && isConnected && !isExecuting) {
+      inputRef.current.focus();
+    }
+  }, [isConnected, isExecuting]);
 
   const executeCommand = () => {
     if (!input.trim() || isExecuting || !isConnected) return;
@@ -98,6 +150,10 @@ export function Terminal({ sandboxId }: TerminalProps) {
     // 特殊命令处理
     if (cmd === 'clear' || cmd === 'cls') {
       setOutput([]);
+      // 清屏后重新聚焦输入框
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
       return;
     }
 
@@ -196,7 +252,6 @@ export function Terminal({ sandboxId }: TerminalProps) {
             disabled={!isConnected || isExecuting}
             spellCheck={false}
           />
-          {isExecuting && <span className={styles.cursor}>▋</span>}
         </div>
       </div>
     </div>

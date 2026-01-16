@@ -19,7 +19,7 @@ opensandbox:
 
 # CORS 配置
 cors:
-  allowed-origins: http://localhost:5173,http://127.0.0.1:5173
+  allowed-origins: http://localhost:5173,http://127.0.0.1:5173,http://172.16.20.96:5173
 
 logging:
   level:

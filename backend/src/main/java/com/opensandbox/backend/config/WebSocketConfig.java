@@ -22,7 +22,13 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        // 分割并去除空格
+        String[] origins = allowedOrigins.split(",");
+        for (int i = 0; i < origins.length; i++) {
+            origins[i] = origins[i].trim();
+        }
+        
         registry.addHandler(terminalWebSocketHandler, "/api/sandboxes/*/terminal")
-                .setAllowedOrigins(allowedOrigins.split(","));
+                .setAllowedOrigins(origins);
     }
 }

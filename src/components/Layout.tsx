@@ -36,7 +36,7 @@ export function Layout({ children }: LayoutProps) {
         </nav>
         <div className={styles.footer}>
           <Activity size={16} />
-          <span>API: http://127.0.0.1:8080</span>
+          <span>API: {window.location.hostname}:8081</span>
         </div>
       </aside>
       <main className={styles.main}>{children}</main>

@@ -4,6 +4,7 @@
 /Users/yanxx/myprojects/sandbox-server-ui/backend/src/main/java/com/opensandbox/backend/config/WebSocketConfig.java
 /Users/yanxx/myprojects/sandbox-server-ui/backend/src/main/java/com/opensandbox/backend/controller/GlobalExceptionHandler.java
 /Users/yanxx/myprojects/sandbox-server-ui/backend/src/main/java/com/opensandbox/backend/controller/SandboxController.java
+/Users/yanxx/myprojects/sandbox-server-ui/backend/src/main/java/com/opensandbox/backend/controller/SandboxProxyController.java
 /Users/yanxx/myprojects/sandbox-server-ui/backend/src/main/java/com/opensandbox/backend/controller/TerminalWebSocketHandler.java
 /Users/yanxx/myprojects/sandbox-server-ui/backend/src/main/java/com/opensandbox/backend/dto/ExecRequest.java
 /Users/yanxx/myprojects/sandbox-server-ui/backend/src/main/java/com/opensandbox/backend/dto/ExecResponse.java

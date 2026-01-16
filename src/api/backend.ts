@@ -1,7 +1,18 @@
 import axios from 'axios';
 
+// 动态获取后端 API 基础地址
+const getBackendApiBaseURL = () => {
+  // 开发环境：使用当前访问的 hostname，端口 8081
+  if (import.meta.env.DEV) {
+    const hostname = window.location.hostname;
+    return `http://${hostname}:8081/api`;
+  }
+  // 生产环境：使用环境变量或默认值
+  return import.meta.env.VITE_BACKEND_API_BASE_URL || 'http://127.0.0.1:8081/api';
+};
+
 const backendApi = axios.create({
-  baseURL: 'http://127.0.0.1:8081/api',
+  baseURL: getBackendApiBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
@@ -83,7 +94,8 @@ export const backendApiService = {
 
   // 下载文件
   getDownloadUrl: (sandboxId: string, path: string): string => {
-    return `http://127.0.0.1:8081/api/sandboxes/${sandboxId}/files/download?path=${encodeURIComponent(path)}`;
+    const baseURL = getBackendApiBaseURL();
+    return `${baseURL}/sandboxes/${sandboxId}/files/download?path=${encodeURIComponent(path)}`;
   },
 
   // 健康检查
@@ -126,10 +138,19 @@ export class TerminalWebSocket {
   }
 
   connect() {
-    const url = `ws://127.0.0.1:8081/api/sandboxes/${this.sandboxId}/terminal`;
+    // 如果已经连接，先断开
+    if (this.ws) {
+      this.disconnect();
+    }
+    
+    // 动态获取 WebSocket URL
+    const hostname = window.location.hostname;
+    const url = `ws://${hostname}:8081/api/sandboxes/${this.sandboxId}/terminal`;
+    console.log('[WebSocket] Connecting to:', url);
     this.ws = new WebSocket(url);
 
     this.ws.onopen = () => {
+      console.log('[WebSocket] Connected');
       this.onConnected();
     };
 
@@ -151,18 +172,21 @@ export class TerminalWebSocket {
             break;
           case 'connected':
             // 连接成功
+            console.log('[WebSocket] Server confirmed connection');
             break;
         }
       } catch (e) {
-        console.error('Failed to parse WebSocket message:', e);
+        console.error('[WebSocket] Failed to parse message:', e);
       }
     };
 
-    this.ws.onerror = () => {
+    this.ws.onerror = (error) => {
+      console.error('[WebSocket] Connection error:', error);
       this.onError('WebSocket 连接错误');
     };
 
-    this.ws.onclose = () => {
+    this.ws.onclose = (event) => {
+      console.log('[WebSocket] Closed:', event.code, event.reason);
       // 连接关闭
     };
   }
@@ -182,12 +206,27 @@ export class TerminalWebSocket {
 
   disconnect() {
     if (this.ws) {
-      // 只在连接已建立时才关闭，避免 React Strict Mode 问题
-      if (this.ws.readyState === WebSocket.OPEN || this.ws.readyState === WebSocket.CONNECTING) {
+      const state = this.ws.readyState;
+      console.log('[WebSocket] Disconnecting, state:', state);
+      
+      // 只在连接已建立或正在连接时才关闭
+      if (state === WebSocket.OPEN || state === WebSocket.CONNECTING) {
         try {
+          // 如果正在连接，等待一下再关闭
+          if (state === WebSocket.CONNECTING) {
+            console.log('[WebSocket] Waiting for connection to establish before closing...');
+            // 设置一个短暂的超时，让连接有机会建立
+            setTimeout(() => {
+              if (this.ws && this.ws.readyState === WebSocket.OPEN) {
+                this.ws.close();
+              }
+              this.ws = null;
+            }, 100);
+            return;
+          }
           this.ws.close();
         } catch (e) {
-          // 忽略关闭错误
+          console.error('[WebSocket] Error closing:', e);
         }
       }
       this.ws = null;
