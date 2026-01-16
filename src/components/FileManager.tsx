@@ -52,21 +52,45 @@ export function FileManager({ sandboxId }: FileManagerProps) {
   });
 
   const navigateTo = (path: string) => {
-    setCurrentPath(path);
+    // 不允许导航到根目录
+    if (path === '/' || path === '') {
+      return;
+    }
+    // 确保路径以 / 开头，但不只是 /
+    const normalizedPath = path.startsWith('/') ? path : '/' + path;
+    if (normalizedPath === '/') {
+      return;
+    }
+    setCurrentPath(normalizedPath);
     setSelectedFile(null);
     setFileContent(null);
     setIsEditing(false);
   };
 
   const goUp = () => {
-    if (currentPath === '/') return;
+    // 不允许回到根目录
+    if (currentPath === '/' || currentPath === '') {
+      return;
+    }
     const parts = currentPath.split('/').filter(Boolean);
+    if (parts.length <= 1) {
+      // 如果已经在最顶层（如 /workspace），不允许再向上
+      return;
+    }
     parts.pop();
-    navigateTo('/' + parts.join('/') || '/');
+    const newPath = '/' + parts.join('/');
+    if (newPath === '/') {
+      return;
+    }
+    navigateTo(newPath);
   };
 
   const handleFileClick = async (file: FileInfo) => {
     if (file.type === 'directory') {
+      // 不允许进入根目录
+      if (file.path === '/' || file.path === '') {
+        return;
+      }
       navigateTo(file.path);
     } else {
       setSelectedFile(file);
@@ -112,12 +136,17 @@ export function FileManager({ sandboxId }: FileManagerProps) {
     <div className={styles.fileManager}>
       <div className={styles.header}>
         <div className={styles.breadcrumb}>
-          <button onClick={() => navigateTo('/')}>/</button>
+          <span className={styles.breadcrumbRoot}>/</span>
           {pathParts.map((part, index) => (
             <span key={index}>
               <ChevronRight size={14} />
               <button
-                onClick={() => navigateTo('/' + pathParts.slice(0, index + 1).join('/'))}
+                onClick={() => {
+                  const targetPath = '/' + pathParts.slice(0, index + 1).join('/');
+                  if (targetPath !== '/') {
+                    navigateTo(targetPath);
+                  }
+                }}
               >
                 {part}
               </button>
@@ -138,7 +167,7 @@ export function FileManager({ sandboxId }: FileManagerProps) {
 
       <div className={styles.content}>
         <div className={styles.fileList}>
-          {currentPath !== '/' && (
+          {currentPath !== '/' && pathParts.length > 1 && (
             <div className={styles.fileItem} onClick={goUp}>
               <Folder size={18} />
               <span>..</span>
